@@ -3,6 +3,9 @@ import { Upload } from 'lucide-react';
 
 function PersonalDetails() {
   const [givengender, setGivengender] = useState("M");
+  const [age, setAge] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+
   const countries = [
     { code: "+65", name: "Singapore", symbol: "🇸🇬" },
     { code: "+60", name: "Malaysia", symbol: "🇲🇾" },
@@ -27,6 +30,28 @@ function PersonalDetails() {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     // Handle file upload logic here
+  };
+
+  const calculateAge = (birthDate) => {
+    if (!birthDate) return "";
+    
+    const dob = new Date(birthDate);
+    const today = new Date();
+    
+    let calculatedAge = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      calculatedAge--;
+    }
+    
+    return calculatedAge;
+  };
+
+  const handleDateOfBirthChange = (e) => {
+    const newDateOfBirth = e.target.value;
+    setDateOfBirth(newDateOfBirth);
+    setAge(calculateAge(newDateOfBirth));
   };
 
   return (
@@ -129,6 +154,8 @@ function PersonalDetails() {
           <label className="block text-sm mb-2">Date of Birth</label>
           <input
             type="date"
+            value={dateOfBirth}
+            onChange={handleDateOfBirthChange}
             className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"
           />
         </div>
@@ -136,7 +163,9 @@ function PersonalDetails() {
           <label className="block text-sm mb-2">Age</label>
           <input
             type="text"
-            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"
+            value={age}
+            readOnly
+            className="w-full h-11 bg-gray-100 shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg cursor-not-allowed"
           />
         </div>
         <div>
@@ -232,6 +261,22 @@ function PersonalDetails() {
         </div>
         <div>
           <label className="block text-sm mb-2">Unit No.</label>
+          <input
+            type="text"
+            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-6 mt-6">
+        <div className='col-span-2'>
+          <label className="block text-sm mb-2">Address</label>
+          <input
+            type="text"
+            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-2">Language</label>
           <input
             type="text"
             className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"

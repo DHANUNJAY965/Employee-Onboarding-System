@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { ChevronDown, Plus, Minus } from 'lucide-react';
+import React, { useState } from "react";
+import { ChevronDown, Plus, Minus } from "lucide-react";
 
 const countries = [
-  { code: 'SG', name: 'Singapore', flag: '🇸🇬', extension: '+65' },
-  { code: 'MY', name: 'Malaysia', flag: '🇲🇾', extension: '+60' },
-  { code: 'ID', name: 'Indonesia', flag: '🇮🇩', extension: '+62' },
-  { code: 'TH', name: 'Thailand', flag: '🇹🇭', extension: '+66' },
-  { code: 'VN', name: 'Vietnam', flag: '🇻🇳', extension: '+84' },
+  { code: "SG", name: "Singapore", flag: "🇸🇬", extension: "+65" },
+  { code: "MY", name: "Malaysia", flag: "🇲🇾", extension: "+60" },
+  { code: "ID", name: "Indonesia", flag: "🇮🇩", extension: "+62" },
+  { code: "TH", name: "Thailand", flag: "🇹🇭", extension: "+66" },
+  { code: "VN", name: "Vietnam", flag: "🇻🇳", extension: "+84" },
 ];
 
 const ContactForm = () => {
   const [referenceContacts, setReferenceContacts] = useState([
-    { name: '', relationship: '', phone: '', country: countries[0], email: '' }
+    { name: "", relationship: "", phone: "", country: countries[0], email: "" },
   ]);
   const [emergencyContacts, setEmergencyContacts] = useState([
-    { name: '', relationship: '', phone: '', country: countries[0] }
+    { name: "", relationship: "", phone: "", country: countries[0] },
   ]);
   const [showReferenceDropdown, setShowReferenceDropdown] = useState({});
   const [showEmergencyDropdown, setShowEmergencyDropdown] = useState({});
@@ -22,7 +22,13 @@ const ContactForm = () => {
   const addReferenceContact = () => {
     setReferenceContacts([
       ...referenceContacts,
-      { name: '', relationship: '', phone: '', country: countries[0], email: '' }
+      {
+        name: "",
+        relationship: "",
+        phone: "",
+        country: countries[0],
+        email: "",
+      },
     ]);
   };
 
@@ -35,7 +41,7 @@ const ContactForm = () => {
   const addEmergencyContact = () => {
     setEmergencyContacts([
       ...emergencyContacts,
-      { name: '', relationship: '', phone: '', country: countries[0] }
+      { name: "", relationship: "", phone: "", country: countries[0] },
     ]);
   };
 
@@ -45,15 +51,15 @@ const ContactForm = () => {
     }
   };
 
-  const ContactSection = ({ 
-    title, 
-    contacts, 
-    setContacts, 
-    showDropdown, 
-    setShowDropdown, 
+  const ContactSection = ({
+    title,
+    contacts,
+    setContacts,
+    showDropdown,
+    setShowDropdown,
     addContact,
-    removeContact, 
-    includeEmail 
+    removeContact,
+    includeEmail,
   }) => {
     const handleCountrySelect = (index, country) => {
       const updatedContacts = [...contacts];
@@ -67,10 +73,12 @@ const ContactForm = () => {
         <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>
         <div className="space-y-6">
           {contacts.map((contact, index) => (
-            <div key={index} className="relative">
-              <div className="flex gap-2">
+            <div key={index} className="">
+              <div className="grid grid-cols-5 gap-6">
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">Name</label>
+                  <label className="block text-gray-700 text-sm mb-2">
+                    Name
+                  </label>
                   <input
                     type="text"
                     className="h-12 bg-white rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.08),-1px_-1px_4px_rgba(0,0,0,0.08)] px-4 text-gray-700"
@@ -83,7 +91,9 @@ const ContactForm = () => {
                   />
                 </div>
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">Relationship</label>
+                  <label className="block text-gray-700 text-sm mb-2">
+                    Relationship
+                  </label>
                   <input
                     type="text"
                     className="h-12 bg-white rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.08),-1px_-1px_4px_rgba(0,0,0,0.08)] px-4 text-gray-700"
@@ -95,13 +105,37 @@ const ContactForm = () => {
                     }}
                   />
                 </div>
+                {includeEmail && (
+                  <div className="w-64">
+                    <label className="block text-gray-700 text-sm mb-2">
+                      E-mail
+                    </label>
+                    <input
+                      type="email"
+                      className="h-12 bg-white rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.08),-1px_-1px_4px_rgba(0,0,0,0.08)] px-4 text-gray-700"
+                      value={contact.email}
+                      onChange={(e) => {
+                        const updatedContacts = [...contacts];
+                        updatedContacts[index].email = e.target.value;
+                        setContacts(updatedContacts);
+                      }}
+                    />
+                  </div>
+                )}
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">Phone No</label>
+                  <label className="block text-gray-700 text-sm mb-2">
+                    Phone No
+                  </label>
                   <div className="flex">
                     <div className="relative">
                       <button
                         className="h-12 px-3 bg-white rounded-l-lg shadow-[4px_4px_4px_rgba(0,0,0,0.08),-1px_-1px_4px_rgba(0,0,0,0.08)] flex items-center gap-2 border-r border-gray-100"
-                        onClick={() => setShowDropdown({ ...showDropdown, [index]: !showDropdown[index] })}
+                        onClick={() =>
+                          setShowDropdown({
+                            ...showDropdown,
+                            [index]: !showDropdown[index],
+                          })
+                        }
                       >
                         <span className="text-lg">{contact.country.flag}</span>
                         <ChevronDown size={16} className="text-gray-400" />
@@ -112,11 +146,15 @@ const ContactForm = () => {
                             <button
                               key={country.code}
                               className=" px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
-                              onClick={() => handleCountrySelect(index, country)}
+                              onClick={() =>
+                                handleCountrySelect(index, country)
+                              }
                             >
                               <span className="text-lg">{country.flag}</span>
                               <span className="text-sm">{country.name}</span>
-                              <span className="text-gray-400 text-sm ml-auto">{country.extension}</span>
+                              <span className="text-gray-400 text-sm ml-auto">
+                                {country.extension}
+                              </span>
                             </button>
                           ))}
                         </div>
@@ -135,40 +173,25 @@ const ContactForm = () => {
                     />
                   </div>
                 </div>
-                {includeEmail && (
-                  <div className="w-64">
-                    <label className="block text-gray-700 text-sm mb-2">E-mail</label>
-                    <input
-                      type="email"
-                      className="h-12 bg-white rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.08),-1px_-1px_4px_rgba(0,0,0,0.08)] px-4 text-gray-700"
-                      value={contact.email}
-                      onChange={(e) => {
-                        const updatedContacts = [...contacts];
-                        updatedContacts[index].email = e.target.value;
-                        setContacts(updatedContacts);
-                      }}
-                    />
-                  </div>
-                )}
-                {index === contacts.length - 1 && (
-                  <div className="flex items-end gap-2 ml-4 mb-[2px]">
-                    {contacts.length > 1 && (
-                      <button
-                        onClick={removeContact}
-                        className="w-10 h-10 bg-red-400 rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-lg"
-                      >
-                        <Minus size={20} />
-                      </button>
-                    )}
-                    <button
-                      onClick={addContact}
-                      className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors shadow-lg"
-                    >
-                      <Plus size={20} />
-                    </button>
-                  </div>
-                )}
               </div>
+              {index === contacts.length - 1 && (
+                <div className="flex w-fit mx-auto items-end gap-2 pt-4 mb-[2px]">
+                  {contacts.length > 1 && (
+                    <button
+                      onClick={removeContact}
+                      className="w-10 h-10 bg-red-400 rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-colors shadow-lg"
+                    >
+                      <Minus size={20} />
+                    </button>
+                  )}
+                  <button
+                    onClick={addContact}
+                    className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors shadow-lg"
+                  >
+                    <Plus size={20} />
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -188,7 +211,7 @@ const ContactForm = () => {
         removeContact={removeLastReferenceContact}
         includeEmail={true}
       />
-      
+
       <ContactSection
         title="Emergency Contact"
         contacts={emergencyContacts}

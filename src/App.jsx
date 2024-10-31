@@ -7,8 +7,7 @@ const App = () => {
     <>
       <div className="mx-12 mt-5 overflow-x-hidden">
         <PageHeader />
-        <EmployeeFormTabs />
-        
+        <EmployeeFormTabs />  
       </div>
       
     </>

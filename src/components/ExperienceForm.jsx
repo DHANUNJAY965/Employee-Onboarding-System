@@ -38,7 +38,7 @@ const ExperienceForm = () => {
             {experienceSections.length > 1 && (
               <div className="absolute -left-12 top-0 bottom-0 flex items-center">
                 <div className="relative flex items-center h-full">
-                  <div className="w-1 bg-blue-900 h-full rounded-full"></div>
+                  <div className="w-1 ml-2 bg-blue-900 h-full rounded-full"></div>
                   <div className="absolute -left-4 top-1/2 -translate-y-1/2 text-3xl font-bold text-blue-900">
                     {index + 1}
                   </div>
@@ -128,7 +128,7 @@ const ExperienceForm = () => {
           </div>
         ))}
 
-        <div className="flex gap-4 mt-4">
+        <div className="flex w-fit mx-auto gap-4 mt-4">
           <button
             onClick={addExperienceSection}
             className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors"

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { ChevronDown, Plus, Minus } from 'lucide-react';
+import React, { useState } from "react";
+import { ChevronDown, Plus, Minus } from "lucide-react";
 
 const EmployeeForm = () => {
   const [equipmentSections, setEquipmentSections] = useState([1]);
-  const [sourceValue, setSourceValue] = useState('');
-  const [businessUnitValue, setBusinessUnitValue] = useState('');
-  const [departmentValue, setDepartmentValue] = useState('');
-  const [designationValue, setDesignationValue] = useState('');
-  const [reportingToValue, setReportingToValue] = useState('');
-  const [userRoleValue, setUserRoleValue] = useState('');
-  const [probationPeriodValue, setProbationPeriodValue] = useState('');
-  const [workingDaysValue, setWorkingDaysValue] = useState('');
-  const [employmentTypeValue, setEmploymentTypeValue] = useState('');
-  const [logInValue, setLogInValue] = useState('');
+  const [sourceValue, setSourceValue] = useState("");
+  const [businessUnitValue, setBusinessUnitValue] = useState("");
+  const [departmentValue, setDepartmentValue] = useState("");
+  const [designationValue, setDesignationValue] = useState("");
+  const [reportingToValue, setReportingToValue] = useState("");
+  const [userRoleValue, setUserRoleValue] = useState("");
+  const [probationPeriodValue, setProbationPeriodValue] = useState("");
+  const [workingDaysValue, setWorkingDaysValue] = useState("");
+  const [employmentTypeValue, setEmploymentTypeValue] = useState("");
+  const [logInValue, setLogInValue] = useState("");
 
   const addEquipmentSection = () => {
     setEquipmentSections([...equipmentSections, equipmentSections.length + 1]);
@@ -38,7 +38,10 @@ const EmployeeForm = () => {
           </option>
         ))}
       </select>
-      <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
+      <ChevronDown
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+        size={16}
+      />
     </div>
   );
 
@@ -47,16 +50,26 @@ const EmployeeForm = () => {
       {/* Form Fields */}
       <div className="grid grid-cols-4 gap-x-4 gap-y-6">
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Source</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Source
+          </label>
           <CustomSelect
             placeholder="Select Source"
-            options={["Re-requirement", "Internal Transfer", "Promotion", "External Hire", "Rehire"]}
+            options={[
+              "Re-requirement",
+              "Internal Transfer",
+              "Promotion",
+              "External Hire",
+              "Rehire",
+            ]}
             value={sourceValue}
             onChange={(e) => setSourceValue(e.target.value)}
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Business Unit</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Business Unit
+          </label>
           <CustomSelect
             placeholder="Select Business Unit"
             options={["Business Unit 1", "Business Unit 2", "Business Unit 3"]}
@@ -65,7 +78,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Department</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Department
+          </label>
           <CustomSelect
             placeholder="Select Department"
             options={["Department 1", "Department 2", "Department 3"]}
@@ -74,7 +89,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Designation</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Designation
+          </label>
           <CustomSelect
             placeholder="Select Designation"
             options={["Designation 1", "Designation 2", "Designation 3"]}
@@ -83,7 +100,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Reporting To</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Reporting To
+          </label>
           <CustomSelect
             placeholder="Select Reporting To"
             options={["Manager 1", "Manager 2", "Manager 3"]}
@@ -92,7 +111,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">User Role</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            User Role
+          </label>
           <CustomSelect
             placeholder="Select User Role"
             options={["Admin", "Editor", "Viewer"]}
@@ -101,7 +122,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Probation Period</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Probation Period
+          </label>
           <CustomSelect
             placeholder="Select Probation Period"
             options={["3 Months", "6 Months", "12 Months"]}
@@ -110,7 +133,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Working Days</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Working Days
+          </label>
           <CustomSelect
             placeholder="Select Working Days"
             options={["5 Days", "6 Days", "7 Days"]}
@@ -119,7 +144,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Employment Type</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Employment Type
+          </label>
           <CustomSelect
             placeholder="Select Employment Type"
             options={["Full-time", "Part-time", "Contract"]}
@@ -128,7 +155,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Log In</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Log In
+          </label>
           <CustomSelect
             placeholder="Select Employment Type"
             options={["Enable", "Disable"]}
@@ -137,7 +166,9 @@ const EmployeeForm = () => {
           />
         </div>
         <div>
-          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Eligible For</label>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Eligible For
+          </label>
           <div className="mt-3 flex space-x-4">
             <label className="flex items-center space-x-2">
               <input type="checkbox" className="w-4 h-4" />
@@ -151,50 +182,57 @@ const EmployeeForm = () => {
         </div>
       </div>
 
-      <div >
-        <div className="text-md font-medium text-gray-900 mb-3">Equipment Issuance</div>
+      <div>
+        <div className="text-md font-medium text-gray-900 mb-3">
+          Equipment Issuance
+        </div>
         {equipmentSections.map((section, index) => (
-          <div key={section} className="grid grid-cols-5 gap-x-4 gap-y-2 mt-2">
+          <div key={section} className="flex items-center gap-3 box-border ">
             <div>
-              <CustomSelect
-                placeholder="Select Type"
-                options={["Laptop", "Phone", "Tablet", "Desktop", "Monitor"]}
-              />
+             <select className="
+              w-40 h-[46px] bg-white border-2 rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3" 
+             name="" id="">
+                <option value="laptop">Laptop</option>
+                <option value="phone">Phone</option>
+                <option value="tablet">Tablet</option>
+                <option value="desktop">Desktop</option>
+                <option value="monitor">Monitor</option>
+
+             </select>
             </div>
-            <div className='pt-2'>
-            <input
+            <div className="">
+              <input
                 type="text"
                 placeholder="Brand Name"
-                className="w-[204px] h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                className="hover:border-2 duration-300 w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
-            <div className='pt-2'>
-            <input
+            <div className="">
+              <input
                 type="text"
-                placeholder="Model"
-                className="w-[204px] h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                placeholder="Brand Name"
+                className="border-2 pl-3 w-40 h-[46px]"
               />
             </div>
-            <div className='pt-2'>
-            <input
+            <div className="">
+              <input
                 type="text"
-                placeholder="Serial Number"
-                className="w-[204px] h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                placeholder="Brand Name"
+                className="border-2 pl-3 w-40 h-[46px]"
               />
             </div>
-            <div className='pt-2'>
-            <input
+            <div className="">
+              <input
                 type="text"
-                placeholder="Cost"
-                className="w-[204px] h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                placeholder="Brand Name"
+                className="border-2 pl-3 w-40 h-[46px]"
               />
             </div>
-            <div className="flex items-center space-x-1 ">
+            <div className="flex items-center space-x-4 ">
               <input
                 type="date"
-                 className="w-[204px] h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                className="w-fit h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
-              
               {index === equipmentSections.length - 1 && (
                 <div className="flex space-x-1">
                   <button
@@ -218,6 +256,7 @@ const EmployeeForm = () => {
             </div>
           </div>
         ))}
+        
       </div>
     </div>
   );
