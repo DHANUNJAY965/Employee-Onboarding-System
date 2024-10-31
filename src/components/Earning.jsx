@@ -1,18 +1,18 @@
 import { FiChevronDown } from "react-icons/fi"; 
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiPlus as Plus, FiMinus as Minus } from "react-icons/fi";
 
 const Earning = () => {
-  // State to manage multiple sections
+  
   const [ordinaryWages, setOrdinaryWages] = useState([{ title: "", amount: "" }]);
   const [additionalWages, setAdditionalWages] = useState([{ title: "", amount: "" }]);
 
-  // Function to add a new ordinary wage section
+
   const addOrdinaryWageSection = () => {
     setOrdinaryWages([...ordinaryWages, { title: "", amount: "" }]);
   };
 
-  // Function to remove an ordinary wage section
+ 
   const removeOrdinaryWageSection = (index) => {
     if (index === ordinaryWages.length - 1) {
       const updatedWages = ordinaryWages.filter((_, i) => i !== index);
@@ -20,12 +20,12 @@ const Earning = () => {
     }
   };
 
-  // Function to add a new additional wage section
+
   const addAdditionalWageSection = () => {
     setAdditionalWages([...additionalWages, { title: "", amount: "" }]);
   };
 
-  // Function to remove an additional wage section
+ 
   const removeAdditionalWageSection = (index) => {
     if (index === additionalWages.length - 1) {
       const updatedWages = additionalWages.filter((_, i) => i !== index);
@@ -35,7 +35,7 @@ const Earning = () => {
   return (
     <>
     <div className="grid grid-cols-4 gap-6 p-6 ">
-      {/* Basic Pay */}
+      
       <div className="col-span-1">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Basic Pay
@@ -51,7 +51,7 @@ const Earning = () => {
         </div>
       </div>
 
-      {/* Payment Type */}
+      
       <div className="col-span-1">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Payment Type
@@ -63,7 +63,7 @@ const Earning = () => {
         />
       </div>
 
-      {/* Payment Mode */}
+     
       <div className="col-span-1 relative">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Payment Mode
@@ -74,7 +74,7 @@ const Earning = () => {
         <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
       </div>
 
-      {/* Frequency */}
+      
       <div className="col-span-1 relative">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Frequency
@@ -85,7 +85,7 @@ const Earning = () => {
         <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
       </div>
 
-      {/* Pay Basis */}
+      
       <div className="col-span-1 relative">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Pay Basis
@@ -96,7 +96,7 @@ const Earning = () => {
         <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
       </div>
 
-      {/* Hourly Rate */}
+      
       <div className="col-span-1">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Hourly Rate
@@ -112,7 +112,7 @@ const Earning = () => {
         </div>
       </div>
 
-      {/* Daily Rate */}
+      
       <div className="col-span-1">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Daily Rate
@@ -128,7 +128,7 @@ const Earning = () => {
         </div>
       </div>
 
-      {/* Salary Advance */}
+      
       <div className=" flex flex-col gap-2">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Salary Advance
@@ -139,7 +139,7 @@ const Earning = () => {
       
     </div>
     <div className="p-6 space-y-4">
-        {/* Other Ordinary Wages */}
+      
         <div>
           <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
             Other Ordinary Wages (If Any)
@@ -183,7 +183,7 @@ const Earning = () => {
                 <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
               </div>
               <div className="flex items-center">
-                {/* Add Button */}
+                
                 {index === ordinaryWages.length - 1 && (
                   <button
                     type="button"
@@ -193,7 +193,7 @@ const Earning = () => {
                     <Plus size={16} />
                   </button>
                 )}
-                {/* Remove Button (only visible on the last section if there is more than one entry) */}
+                
                 {ordinaryWages.length > 1 && index === ordinaryWages.length - 1 && (
                   <button
                     type="button"
@@ -208,7 +208,7 @@ const Earning = () => {
           ))}
         </div>
 
-        {/* Additional Wages */}
+       
         <div>
           <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
             Additional Wages (If Any)
@@ -252,7 +252,7 @@ const Earning = () => {
                 <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
               </div>
               <div className="flex items-center">
-                {/* Add Button */}
+                
                 {index === additionalWages.length - 1 && (
                   <button
                     type="button"
@@ -262,7 +262,7 @@ const Earning = () => {
                     <Plus size={16} />
                   </button>
                 )}
-                {/* Remove Button (only visible on the last section if there is more than one entry) */}
+                
                 {additionalWages.length > 1 && index === additionalWages.length - 1 && (
                   <button
                     type="button"

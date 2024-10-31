@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Upload } from "lucide-react";
 
-function PersonalDetails({ data, setData }) {
+function PersonalDetails({ data, setData ,setUserName}) {
   const [formState, setFormState] = useState({
     employeeId: data?.employeeId || "",
     fullName: data?.fullName || "",
@@ -115,7 +115,11 @@ function PersonalDetails({ data, setData }) {
                 type="text"
                 name="fullName"
                 value={formState.fullName}
-                onChange={handleInputChange}
+                
+                onChange={(e) => {
+                  handleInputChange(e);
+                  setUserName(e.target.value);
+                }}
                 className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 text-lg"
               />
             </div>
