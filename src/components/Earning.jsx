@@ -1,7 +1,6 @@
-
 import { FiChevronDown } from "react-icons/fi"; 
 import React, { useState } from "react";
-import { FiChevronDown as ChevronDown, FiPlus as Plus, FiMinus as Minus } from "react-icons/fi";
+import { FiPlus as Plus, FiMinus as Minus } from "react-icons/fi";
 
 const Earning = () => {
   // State to manage multiple sections
@@ -15,8 +14,10 @@ const Earning = () => {
 
   // Function to remove an ordinary wage section
   const removeOrdinaryWageSection = (index) => {
-    const updatedWages = ordinaryWages.filter((_, i) => i !== index);
-    setOrdinaryWages(updatedWages);
+    if (index === ordinaryWages.length - 1) {
+      const updatedWages = ordinaryWages.filter((_, i) => i !== index);
+      setOrdinaryWages(updatedWages);
+    }
   };
 
   // Function to add a new additional wage section
@@ -26,8 +27,10 @@ const Earning = () => {
 
   // Function to remove an additional wage section
   const removeAdditionalWageSection = (index) => {
-    const updatedWages = additionalWages.filter((_, i) => i !== index);
-    setAdditionalWages(updatedWages);
+    if (index === additionalWages.length - 1) {
+      const updatedWages = additionalWages.filter((_, i) => i !== index);
+      setAdditionalWages(updatedWages);
+    }
   };
   return (
     <>
@@ -126,150 +129,154 @@ const Earning = () => {
       </div>
 
       {/* Salary Advance */}
-      <div className="col-span-1 flex items-center gap-2">
+      <div className=" flex flex-col gap-2">
         <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
           Salary Advance
         </label>
-        <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_04px_#1A72A7] rounded-md accent-[#1A72A7]" />
+        <input type="checkbox" className="w-6 h-6 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
       </div>
 
       
     </div>
-    <div className="p-6  space-y-4">
-      {/* Other Ordinary Wages */}
-      <div>
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Other Ordinary Wages (If Any)
-        </label>
-        {ordinaryWages.map((wage, index) => (
-          <div key={index} className="grid grid-cols-6 gap-4 items-center mt-2">
-            <div className="col-span-1">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
-              <input
-                type="text"
-                placeholder="Title"
-                className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-                value={wage.title}
-                onChange={(e) => {
-                  const updatedWages = [...ordinaryWages];
-                  updatedWages[index].title = e.target.value;
-                  setOrdinaryWages(updatedWages);
-                }}
-              />
+    <div className="p-6 space-y-4">
+        {/* Other Ordinary Wages */}
+        <div>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Other Ordinary Wages (If Any)
+          </label>
+          {ordinaryWages.map((wage, index) => (
+            <div key={index} className="flex gap-8 items-center mt-2">
+              <div className="w-1/3">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+                  value={wage.title}
+                  onChange={(e) => {
+                    const updatedWages = [...ordinaryWages];
+                    updatedWages[index].title = e.target.value;
+                    setOrdinaryWages(updatedWages);
+                  }}
+                />
+              </div>
+              <div className="w-1/3">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Amount</label>
+                <input
+                  type="text"
+                  placeholder="Amount"
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+                  value={wage.amount}
+                  onChange={(e) => {
+                    const updatedWages = [...ordinaryWages];
+                    updatedWages[index].amount = e.target.value;
+                    setOrdinaryWages(updatedWages);
+                  }}
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
+                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              </div>
+              <div className="flex items-center">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
+                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              </div>
+              <div className="flex items-center">
+                {/* Add Button */}
+                {index === ordinaryWages.length - 1 && (
+                  <button
+                    type="button"
+                    className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
+                    onClick={addOrdinaryWageSection}
+                  >
+                    <Plus size={16} />
+                  </button>
+                )}
+                {/* Remove Button (only visible on the last section if there is more than one entry) */}
+                {ordinaryWages.length > 1 && index === ordinaryWages.length - 1 && (
+                  <button
+                    type="button"
+                    className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                    onClick={() => removeOrdinaryWageSection(index)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="col-span-1">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Amount</label>
-              <input
-                type="text"
-                placeholder="Amount"
-                className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-                value={wage.amount}
-                onChange={(e) => {
-                  const updatedWages = [...ordinaryWages];
-                  updatedWages[index].amount = e.target.value;
-                  setOrdinaryWages(updatedWages);
-                }}
-              />
-            </div>
-            <div className="col-span-1 flex items-center">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_04px_#1A72A7] rounded-md accent-[#1A72A7]" />
-            </div>
-            <div className="col-span-1 flex items-center">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_04px_#1A72A7] rounded-md accent-[#1A72A7]" />
-            </div>
-            <div className="col-span-1 flex items-center">
-              {/* Add Button */}
-              <button
-                type="button"
-                className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
-                onClick={addOrdinaryWageSection}
-              >
-                <Plus size={16} />
-              </button>
-              {/* Remove Button (only visible if there is more than one entry) */}
-              {ordinaryWages.length > 1 && (
-                <button
-                  type="button"
-                  className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
-                  onClick={() => removeOrdinaryWageSection(index)}
-                >
-                  <Minus size={16} />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Additional Wages */}
-      <div>
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Additional Wages (If Any)
-        </label>
-        {additionalWages.map((wage, index) => (
-          <div key={index} className="grid grid-cols-6 gap-4 items-center mt-2">
-            <div className="col-span-1">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
-              <input
-                type="text"
-                placeholder="Title"
-                className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-                value={wage.title}
-                onChange={(e) => {
-                  const updatedWages = [...additionalWages];
-                  updatedWages[index].title = e.target.value;
-                  setAdditionalWages(updatedWages);
-                }}
-              />
+        {/* Additional Wages */}
+        <div>
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Additional Wages (If Any)
+          </label>
+          {additionalWages.map((wage, index) => (
+            <div key={index} className="flex gap-8 items-center mt-2">
+              <div className="w-1/3">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+                  value={wage.title}
+                  onChange={(e) => {
+                    const updatedWages = [...additionalWages];
+                    updatedWages[index].title = e.target.value;
+                    setAdditionalWages(updatedWages);
+                  }}
+                />
+              </div>
+              <div className="w-1/3">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Amount</label>
+                <input
+                  type="text"
+                  placeholder="Amount"
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+                  value={wage.amount}
+                  onChange={(e) => {
+                    const updatedWages = [...additionalWages];
+                    updatedWages[index].amount = e.target.value;
+                    setAdditionalWages(updatedWages);
+                  }}
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
+              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              </div>
+              <div className="flex items-center">
+                <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
+                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              </div>
+              <div className="flex items-center">
+                {/* Add Button */}
+                {index === additionalWages.length - 1 && (
+                  <button
+                    type="button"
+                    className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
+                    onClick={addAdditionalWageSection}
+                  >
+                    <Plus size={16} />
+                  </button>
+                )}
+                {/* Remove Button (only visible on the last section if there is more than one entry) */}
+                {additionalWages.length > 1 && index === additionalWages.length - 1 && (
+                  <button
+                    type="button"
+                    className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                    onClick={() => removeAdditionalWageSection(index)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="col-span-1">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Amount</label>
-              <input
-                type="text"
-                placeholder="Amount"
-                className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-                value={wage.amount}
-                onChange={(e) => {
-                  const updatedWages = [...additionalWages];
-                  updatedWages[index].amount = e.target.value;
-                  setAdditionalWages(updatedWages);
-                }}
-              />
-            </div>
-            <div className="col-span-1 flex items-center">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_04px_#1A72A7] rounded-md accent-[#1A72A7]" />
-            </div>
-            <div className="col-span-1 flex items-center">
-              <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_04px_#1A72A7] rounded-md accent-[#1A72A7]" />
-            </div>
-            <div className="col-span-1 flex items-center">
-              {/* Add Button */}
-              <button
-                type="button"
-                className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
-                onClick={addAdditionalWageSection}
-              >
-                <Plus size={16} />
-              </button>
-              {/* Remove Button (only visible if there is more than one entry) */}
-              {additionalWages.length > 1 && (
-                <button
-                  type="button"
-                  className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
-                  onClick={() => removeAdditionalWageSection(index)}
-                >
-                  <Minus size={16} />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 };

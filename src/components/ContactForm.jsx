@@ -74,7 +74,7 @@ const ContactForm = () => {
         <div className="space-y-6">
           {contacts.map((contact, index) => (
             <div key={index} className="">
-              <div className="grid grid-cols-5 gap-6">
+              <div className="grid grid-cols-5 gap-24">
                 <div className="w-64">
                   <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">
                     Name

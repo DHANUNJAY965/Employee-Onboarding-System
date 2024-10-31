@@ -61,8 +61,8 @@ const EmployeeFormTabs = () => {
   };
 
   return (
-    <>
-      <div className="m-16 mt-12 w-full">
+    <div className="flex items-center justify-center">
+      <div className="mx-36 my-8 w-full">
         <div className="flex flex-col overflow-x-auto no-scrollbar w-fit">
           <div className="flex gap-1 p-1 border-b-[3px] pb-3 border-b-[#333333]">
             {navItems.map((item) => (
@@ -87,7 +87,7 @@ const EmployeeFormTabs = () => {
               </button>
             ))}
           </div>
-          <div className="border-2 my-4 h-[450px] overflow-y-auto">
+          <div className="border-2 w-[72vw] my-4 h-[450px] overflow-y-auto">
             {activeTab === 1 && (
               <PersonalDetails
                 data={formData.personalDetails}
@@ -142,8 +142,7 @@ const EmployeeFormTabs = () => {
                 setData={(data) => handleFormDataChange("earning", data)}
               />
             )}
-          </div>
-          
+          </div>     
           {/* Navigation Buttons */}
           <div className="flex items-center justify-between mt-4">
             <div>
@@ -230,8 +229,9 @@ const EmployeeFormTabs = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 export default EmployeeFormTabs;
+

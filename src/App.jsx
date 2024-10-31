@@ -5,11 +5,10 @@ import EmployeeFormTabs from "./components/EmployeeFormTabs";
 const App = () => {
   return (
     <>
-      <div className="mx-12 mt-5 overflow-x-hidden">
+      <div className="w-screen h-screen overflow-hidden flex flex-col">
         <PageHeader />
         <EmployeeFormTabs />  
       </div>
-      
     </>
   );
 };
