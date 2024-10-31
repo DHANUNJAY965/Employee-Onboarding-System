@@ -28,7 +28,7 @@ const EducationForm = ({ data, setData }) => {
       educationEntries: educationSections,
       skills: skills
     });
-  }, [educationSections, skills, setData]);
+  }, [educationSections, skills]);
 
   const addEducationSection = () => {
     setEducationSections([...educationSections, defaultEducationEntry]);

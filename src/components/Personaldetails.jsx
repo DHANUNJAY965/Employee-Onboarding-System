@@ -46,7 +46,7 @@ function PersonalDetails({ data, setData ,setUserName}) {
 
   useEffect(() => {
     setData(formState);
-  }, [formState, setData]);
+  }, [formState]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

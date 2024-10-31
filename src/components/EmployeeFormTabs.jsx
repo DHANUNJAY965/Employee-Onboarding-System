@@ -104,13 +104,15 @@ const EmployeeFormTabs = ({setUserName}) => {
             data={formData.experience}
             setData={(data) => handleFormDataChange("experience", data)}
           />
-        )}
+        ) }
+        
         {activeTab === 4 && (
           <ContactForm
             data={formData.contact}
             setData={(data) => handleFormDataChange("contact", data)}
           />
         )}
+        {/* && console.log("the data is : ",formData.personalDetails,formData.education,formData.experience) */}
         {activeTab === 5 && (
           <MaritalStatusForm
             data={formData.maritalStatus}

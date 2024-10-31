@@ -26,7 +26,7 @@ const ExperienceForm = ({ data, setData }) => {
     setData({
       experienceEntries: experienceSections
     });
-  }, [experienceSections, setData]);
+  }, [experienceSections]);
 
   const addExperienceSection = () => {
     setExperienceSections([...experienceSections, defaultExperienceEntry]);
