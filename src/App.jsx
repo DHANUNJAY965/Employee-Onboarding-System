@@ -1,7 +1,7 @@
 import React from "react";
 import PageHeader from "./components/Header";
 import EmployeeFormTabs from "./components/EmployeeFormTabs";
-import PersonalDetails from './components/Personaldetails';
+
 const App = () => {
   return (
     <>

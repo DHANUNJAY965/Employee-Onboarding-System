@@ -6,6 +6,8 @@ import ContactForm from "./ContactForm";
 import MaritalStatusForm from "./MaritalStatusForm";
 import EmployeeForm from "./EmployeeForm";
 import Earning from "./Earning";
+import LeaveBenefitsTable from "./LeaveBenefitsTable";
+import OffBoard from "./OffBoard";
 
 const navItems = [
   { id: 1, label: "Personal Details", active: true },
@@ -30,6 +32,7 @@ const EmployeeFormTabs = () => {
     maritalStatus: {},
     employment: {},
     earning: {},
+    Benefits: {}
   });
 
   const handleFormDataChange = (key, data) => {
@@ -37,6 +40,24 @@ const EmployeeFormTabs = () => {
       ...prevData,
       [key]: data,
     }));
+  };
+
+  const handleNext = () => {
+    if (activeTab < navItems.length) {
+      setActiveTab(activeTab + 1);
+      navItems.forEach((navItem) => {
+        navItem.active = navItem.id === activeTab + 1;
+      });
+    }
+  };
+
+  const handleBack = () => {
+    if (activeTab > 1) {
+      setActiveTab(activeTab - 1);
+      navItems.forEach((navItem) => {
+        navItem.active = navItem.id === activeTab - 1;
+      });
+    }
   };
 
   return (
@@ -109,6 +130,103 @@ const EmployeeFormTabs = () => {
                 setData={(data) => handleFormDataChange("earning", data)}
               />
             )}
+            {activeTab === 8 && (
+              <LeaveBenefitsTable
+                data={formData.Benefits}
+                setData={(data) => handleFormDataChange("Benefits", data)}
+              />
+            )}
+            {activeTab === 9 && (
+              <OffBoard
+                data={formData.earning}
+                setData={(data) => handleFormDataChange("earning", data)}
+              />
+            )}
+          </div>
+          
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between mt-4">
+            <div>
+              {/* Back Button - Only show if not on first tab */}
+              {activeTab > 1 && (
+                <button
+                  onClick={handleBack}
+                  className="flex items-center gap-2 px-6 py-2 text-white bg-[#1E3B8B] rounded-lg hover:bg-[#1a3279] transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      d="M19 12H5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 19L5 12L12 5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Back
+                </button>
+              )}
+            </div>
+            
+            <div className="flex gap-4">
+              {/* Save as Draft Button */}
+              <button className="flex items-center gap-2 px-6 py-2 text-[#1E3B8B] bg-[#E7EEF9] rounded-lg hover:bg-[#d8e3f3] transition-colors">
+                <svg 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M15.666 5.83334L14.1667 4.33334H2.5V15.8333H17.5V7.33334L15.666 5.83334ZM10 14.5833C8.625 14.5833 7.5 13.4583 7.5 12.0833C7.5 10.7083 8.625 9.58334 10 9.58334C11.375 9.58334 12.5 10.7083 12.5 12.0833C12.5 13.4583 11.375 14.5833 10 14.5833ZM12.5 8.33334H4.16667V5.83334H12.5V8.33334Z"/>
+                </svg>
+                Save as Draft
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={handleNext}
+                className="flex items-center gap-2 px-6 py-2 text-white bg-[#1E3B8B] rounded-lg hover:bg-[#1a3279] transition-colors"
+              >
+                Next
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                >
+                  <path
+                    d="M5 12H19"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12 5L19 12L12 19"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

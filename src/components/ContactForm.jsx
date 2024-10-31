@@ -76,7 +76,7 @@ const ContactForm = () => {
             <div key={index} className="">
               <div className="grid grid-cols-5 gap-6">
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">
+                  <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">
                     Name
                   </label>
                   <input
@@ -91,7 +91,7 @@ const ContactForm = () => {
                   />
                 </div>
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">
+                  <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">
                     Relationship
                   </label>
                   <input
@@ -107,7 +107,7 @@ const ContactForm = () => {
                 </div>
                 {includeEmail && (
                   <div className="w-64">
-                    <label className="block text-gray-700 text-sm mb-2">
+                    <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">
                       E-mail
                     </label>
                     <input
@@ -123,7 +123,7 @@ const ContactForm = () => {
                   </div>
                 )}
                 <div className="w-64">
-                  <label className="block text-gray-700 text-sm mb-2">
+                  <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">
                     Phone No
                   </label>
                   <div className="flex">

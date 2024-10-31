@@ -171,11 +171,11 @@ const EmployeeForm = () => {
           </label>
           <div className="mt-3 flex space-x-4">
             <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4" />
+              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
               <span className="text-[16px]">Part Time</span>
             </label>
             <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4" />
+              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
               <span className="text-[16px]">Over Time</span>
             </label>
           </div>
@@ -187,11 +187,11 @@ const EmployeeForm = () => {
           Equipment Issuance
         </div>
         {equipmentSections.map((section, index) => (
-          <div key={section} className="flex items-center gap-3 box-border ">
+          <div key={section} className="flex items-center gap-3 box-border m-2 ">
             <div>
              <select className="
-              w-40 h-[46px] bg-white border-2 rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3" 
-             name="" id="">
+              w-40 h-[46px] bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] tracking-wider focus:outline-none pl-3" 
+             name="" id=""> 
                 <option value="laptop">Laptop</option>
                 <option value="phone">Phone</option>
                 <option value="tablet">Tablet</option>
@@ -204,28 +204,28 @@ const EmployeeForm = () => {
               <input
                 type="text"
                 placeholder="Brand Name"
-                className="hover:border-2 duration-300 w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
+                className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
             <div className="">
               <input
                 type="text"
                 placeholder="Brand Name"
-                className="border-2 pl-3 w-40 h-[46px]"
+                className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
             <div className="">
               <input
                 type="text"
                 placeholder="Brand Name"
-                className="border-2 pl-3 w-40 h-[46px]"
+                className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
             <div className="">
               <input
                 type="text"
                 placeholder="Brand Name"
-                className="border-2 pl-3 w-40 h-[46px]"
+                className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
             <div className="flex items-center space-x-4 ">
