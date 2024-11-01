@@ -119,6 +119,7 @@ const EmployeeFormTabs = ({setUserName}) => {
             setData={(data) => handleFormDataChange("maritalStatus", data)}
           />
         ) }
+        {/* && console.log("the contact details are :",formData.contact) */}
         {activeTab === 6 && (
           <EmployeeForm
             data={formData.employment}
@@ -130,13 +131,15 @@ const EmployeeFormTabs = ({setUserName}) => {
             data={formData.earning}
             setData={(data) => handleFormDataChange("earning", data)}
           />
-        )}
+        ) }
+        {/* && console.log("the contact details are :",formData.employment) */}
         {activeTab === 8 && (
           <LeaveBenefitsTable
             data={formData.Benefits}
             setData={(data) => handleFormDataChange("Benefits", data)}
           />
         )}
+        {/* && console.log("the contact details are :",formData.earning) */}
         {activeTab === 9 && (
           <OffBoard
             data={formData.earning}

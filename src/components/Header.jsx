@@ -33,11 +33,11 @@ const PageHeader = ({userName}) => {
           </svg>
         </button>
 
-        {/* Page title */}
+       
         <h1 className="text-xl font-medium text-gray-800">Create-New Employee</h1>
       </div>
 
-      {/* User name */}
+
       <div className="text-lg text-gray-700">{userName}</div>
     </header>
   );

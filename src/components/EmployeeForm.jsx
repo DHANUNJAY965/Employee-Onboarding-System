@@ -1,26 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, Plus, Minus } from "lucide-react";
 
-const EmployeeForm = () => {
-  const [equipmentSections, setEquipmentSections] = useState([1]);
-  const [sourceValue, setSourceValue] = useState("");
-  const [businessUnitValue, setBusinessUnitValue] = useState("");
-  const [departmentValue, setDepartmentValue] = useState("");
-  const [designationValue, setDesignationValue] = useState("");
-  const [reportingToValue, setReportingToValue] = useState("");
-  const [userRoleValue, setUserRoleValue] = useState("");
-  const [probationPeriodValue, setProbationPeriodValue] = useState("");
-  const [workingDaysValue, setWorkingDaysValue] = useState("");
-  const [employmentTypeValue, setEmploymentTypeValue] = useState("");
-  const [logInValue, setLogInValue] = useState("");
+const EmployeeForm = ({ data, setData }) => {
+  
+  const [formState, setFormState] = useState({
+    source: data?.source || "",
+    businessUnit: data?.businessUnit || "",
+    department: data?.department || "",
+    designation: data?.designation || "",
+    reportingTo: data?.reportingTo || "",
+    userRole: data?.userRole || "",
+    probationPeriod: data?.probationPeriod || "",
+    workingDays: data?.workingDays || "",
+    employmentType: data?.employmentType || "",
+    logIn: data?.logIn || "",
+    eligibleFor: data?.eligibleFor || {
+      partTime: false,
+      overTime: false
+    },
+    equipmentIssuance: data?.equipmentIssuance || [
+      {
+        type: "",
+        brand: "",
+        model: "",
+        serialNumber: "",
+        assetTag: "",
+        issueDate: ""
+      }
+    ]
+  });
+
+  
+  useEffect(() => {
+    setData(formState);
+  }, [formState]);
+
+  const updateFormField = (field, value) => {
+    setFormState(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const updateEligibleFor = (type) => {
+    setFormState(prev => ({
+      ...prev,
+      eligibleFor: {
+        ...prev.eligibleFor,
+        [type]: !prev.eligibleFor[type]
+      }
+    }));
+  };
+
+  const updateEquipmentField = (index, field, value) => {
+    const newEquipment = [...formState.equipmentIssuance];
+    newEquipment[index] = {
+      ...newEquipment[index],
+      [field]: value
+    };
+    setFormState(prev => ({
+      ...prev,
+      equipmentIssuance: newEquipment
+    }));
+  };
 
   const addEquipmentSection = () => {
-    setEquipmentSections([...equipmentSections, equipmentSections.length + 1]);
+    setFormState(prev => ({
+      ...prev,
+      equipmentIssuance: [
+        ...prev.equipmentIssuance,
+        {
+          type: "",
+          brand: "",
+          model: "",
+          serialNumber: "",
+          assetTag: "",
+          issueDate: ""
+        }
+      ]
+    }));
   };
 
   const removeLastEquipmentSection = () => {
-    if (equipmentSections.length > 1) {
-      setEquipmentSections(equipmentSections.slice(0, -1));
+    if (formState.equipmentIssuance.length > 1) {
+      setFormState(prev => ({
+        ...prev,
+        equipmentIssuance: prev.equipmentIssuance.slice(0, -1)
+      }));
     }
   };
 
@@ -47,7 +113,6 @@ const EmployeeForm = () => {
 
   return (
     <div className="p-4 space-y-4">
-      {/* Form Fields */}
       <div className="grid grid-cols-4 gap-x-4 gap-y-6">
         <div>
           <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
@@ -62,8 +127,8 @@ const EmployeeForm = () => {
               "External Hire",
               "Rehire",
             ]}
-            value={sourceValue}
-            onChange={(e) => setSourceValue(e.target.value)}
+            value={formState.source}
+            onChange={(e) => updateFormField("source", e.target.value)}
           />
         </div>
         <div>
@@ -73,8 +138,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Business Unit"
             options={["Business Unit 1", "Business Unit 2", "Business Unit 3"]}
-            value={businessUnitValue}
-            onChange={(e) => setBusinessUnitValue(e.target.value)}
+            value={formState.businessUnit}
+            onChange={(e) => updateFormField("businessUnit", e.target.value)}
           />
         </div>
         <div>
@@ -84,8 +149,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Department"
             options={["Department 1", "Department 2", "Department 3"]}
-            value={departmentValue}
-            onChange={(e) => setDepartmentValue(e.target.value)}
+            value={formState.department}
+            onChange={(e) => updateFormField("department", e.target.value)}
           />
         </div>
         <div>
@@ -95,8 +160,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Designation"
             options={["Designation 1", "Designation 2", "Designation 3"]}
-            value={designationValue}
-            onChange={(e) => setDesignationValue(e.target.value)}
+            value={formState.designation}
+            onChange={(e) => updateFormField("designation", e.target.value)}
           />
         </div>
         <div>
@@ -106,8 +171,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Reporting To"
             options={["Manager 1", "Manager 2", "Manager 3"]}
-            value={reportingToValue}
-            onChange={(e) => setReportingToValue(e.target.value)}
+            value={formState.reportingTo}
+            onChange={(e) => updateFormField("reportingTo", e.target.value)}
           />
         </div>
         <div>
@@ -117,8 +182,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select User Role"
             options={["Admin", "Editor", "Viewer"]}
-            value={userRoleValue}
-            onChange={(e) => setUserRoleValue(e.target.value)}
+            value={formState.userRole}
+            onChange={(e) => updateFormField("userRole", e.target.value)}
           />
         </div>
         <div>
@@ -128,8 +193,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Probation Period"
             options={["3 Months", "6 Months", "12 Months"]}
-            value={probationPeriodValue}
-            onChange={(e) => setProbationPeriodValue(e.target.value)}
+            value={formState.probationPeriod}
+            onChange={(e) => updateFormField("probationPeriod", e.target.value)}
           />
         </div>
         <div>
@@ -139,8 +204,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Working Days"
             options={["5 Days", "6 Days", "7 Days"]}
-            value={workingDaysValue}
-            onChange={(e) => setWorkingDaysValue(e.target.value)}
+            value={formState.workingDays}
+            onChange={(e) => updateFormField("workingDays", e.target.value)}
           />
         </div>
         <div>
@@ -150,8 +215,8 @@ const EmployeeForm = () => {
           <CustomSelect
             placeholder="Select Employment Type"
             options={["Full-time", "Part-time", "Contract"]}
-            value={employmentTypeValue}
-            onChange={(e) => setEmploymentTypeValue(e.target.value)}
+            value={formState.employmentType}
+            onChange={(e) => updateFormField("employmentType", e.target.value)}
           />
         </div>
         <div>
@@ -159,10 +224,10 @@ const EmployeeForm = () => {
             Log In
           </label>
           <CustomSelect
-            placeholder="Select Employment Type"
+            placeholder="Select Log In Type"
             options={["Enable", "Disable"]}
-            value={employmentTypeValue}
-            onChange={(e) => setEmploymentTypeValue(e.target.value)}
+            value={formState.logIn}
+            onChange={(e) => updateFormField("logIn", e.target.value)}
           />
         </div>
         <div>
@@ -171,11 +236,21 @@ const EmployeeForm = () => {
           </label>
           <div className="mt-3 flex space-x-4">
             <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              <input 
+                type="checkbox" 
+                checked={formState.eligibleFor.partTime}
+                onChange={() => updateEligibleFor("partTime")}
+                className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+              />
               <span className="text-[16px]">Part Time</span>
             </label>
             <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+              <input 
+                type="checkbox" 
+                checked={formState.eligibleFor.overTime}
+                onChange={() => updateEligibleFor("overTime")}
+                className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+              />
               <span className="text-[16px]">Over Time</span>
             </label>
           </div>
@@ -186,54 +261,66 @@ const EmployeeForm = () => {
         <div className="text-md font-medium text-gray-900 mb-3">
           Equipment Issuance
         </div>
-        {equipmentSections.map((section, index) => (
-          <div key={section} className="flex items-center gap-3 box-border m-2 ">
+        {formState.equipmentIssuance.map((equipment, index) => (
+          <div key={index} className="flex items-center gap-3 box-border m-2">
             <div>
-             <select className="
-              w-40 h-[46px] bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] tracking-wider focus:outline-none pl-3" 
-             name="" id=""> 
+              <select 
+                value={equipment.type}
+                onChange={(e) => updateEquipmentField(index, "type", e.target.value)}
+                className="w-40 h-[46px] bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] tracking-wider focus:outline-none pl-3"
+              >
+                <option value="">Select Type</option>
                 <option value="laptop">Laptop</option>
                 <option value="phone">Phone</option>
                 <option value="tablet">Tablet</option>
                 <option value="desktop">Desktop</option>
                 <option value="monitor">Monitor</option>
-
-             </select>
+              </select>
             </div>
-            <div className="">
+            <div>
               <input
                 type="text"
                 placeholder="Brand Name"
+                value={equipment.brand}
+                onChange={(e) => updateEquipmentField(index, "brand", e.target.value)}
                 className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
-            <div className="">
+            <div>
               <input
                 type="text"
-                placeholder="Brand Name"
+                placeholder="Model"
+                value={equipment.model}
+                onChange={(e) => updateEquipmentField(index, "model", e.target.value)}
                 className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
-            <div className="">
+            <div>
               <input
                 type="text"
-                placeholder="Brand Name"
+                placeholder="Serial Number"
+                value={equipment.serialNumber}
+                onChange={(e) => updateEquipmentField(index, "serialNumber", e.target.value)}
                 className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
-            <div className="">
+            <div>
               <input
                 type="text"
-                placeholder="Brand Name"
+                placeholder="Asset Tag"
+                value={equipment.assetTag}
+                onChange={(e) => updateEquipmentField(index, "assetTag", e.target.value)}
                 className="w-40 h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
             </div>
-            <div className="flex items-center space-x-4 ">
+            <div className="flex items-center space-x-4">
               <input
                 type="date"
+                value={equipment.issueDate}
+                onChange={(e) => updateEquipmentField(index, "issueDate", e.target.value)}
                 className="w-fit h-[46px] bg-white shadow-[4px_4px_4px_rgba(0,0,0,0.25),-1px_-1px_4px_rgba(0,0,0,0.25)] rounded-lg text-gray-700 text-[18px] font-light tracking-wider pl-3"
               />
-              {index === equipmentSections.length - 1 && (
+              {index === formState.equipmentIssuance.length - 1 && (
                 <div className="flex space-x-1">
                   <button
                     type="button"
@@ -242,7 +329,7 @@ const EmployeeForm = () => {
                   >
                     <Plus size={16} />
                   </button>
-                  {equipmentSections.length > 1 && (
+                  {formState.equipmentIssuance.length > 1 && (
                     <button
                       type="button"
                       className="p-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
@@ -256,7 +343,6 @@ const EmployeeForm = () => {
             </div>
           </div>
         ))}
-        
       </div>
     </div>
   );
