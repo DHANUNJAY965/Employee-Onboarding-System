@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { X, Calendar, Plus, Minus } from "lucide-react";
 
 const EducationForm = ({ data, setData }) => {
-  
   const defaultEducationEntry = {
     instituteName: "",
     qualification: "",
@@ -10,22 +9,36 @@ const EducationForm = ({ data, setData }) => {
     startDate: "",
     endDate: "",
     document: "",
-    documentFile: null
+    documentFile: null,
+    isUploading: false,
+    fileName: ""
   };
 
-  
   const [educationSections, setEducationSections] = useState(
     data?.educationEntries?.length > 0 
-      ? data.educationEntries 
+      ? data.educationEntries.map(entry => ({
+          ...defaultEducationEntry,
+          ...entry,
+          fileName: entry.documentFile?.name || ""
+        }))
       : [defaultEducationEntry]
   );
   const [skills, setSkills] = useState(data?.skills || ["Observer"]);
   const [currentSkill, setCurrentSkill] = useState("");
 
-  
   useEffect(() => {
+    
+    const formattedEducationEntries = educationSections.map(section => ({
+      instituteName: section.instituteName,
+      qualification: section.qualification,
+      grade: section.grade,
+      startDate: section.startDate,
+      endDate: section.endDate,
+      document: section.document
+    }));
+
     setData({
-      educationEntries: educationSections,
+      educationEntries: formattedEducationEntries,
       skills: skills
     });
   }, [educationSections, skills]);
@@ -54,17 +67,63 @@ const EducationForm = ({ data, setData }) => {
 
   const handleFileUpload = async (index, file) => {
     if (!file) return;
-    
-   
-    updateEducationSection(index, 'documentFile', file);
-    
-    const fileUrl = await handleFile(file);
-    updateEducationSection(index, 'document', fileUrl);
+
+    const updatedSections = [...educationSections];
+    updatedSections[index] = {
+      ...updatedSections[index],
+      isUploading: true,
+      fileName: file.name,
+      documentFile: file
+    };
+    setEducationSections(updatedSections);
+
+    try {
+      const fileUrl = await handleFile(file);
+      
+      const finalUpdatedSections = [...educationSections];
+      finalUpdatedSections[index] = {
+        ...finalUpdatedSections[index],
+        document: fileUrl, 
+        isUploading: false,
+        fileName: file.name
+      };
+      setEducationSections(finalUpdatedSections);
+    } catch (error) {
+      console.error('File upload failed:', error);
+      const resetSections = [...educationSections];
+      resetSections[index] = {
+        ...resetSections[index],
+        isUploading: false,
+        fileName: "",
+        documentFile: null,
+        document: ""
+      };
+      setEducationSections(resetSections);
+    }
   };
 
- 
   const handleFile = async (file) => {
-    return "";
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/upload/document', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("data.url :", data.url);
+        return data.url;
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
   };
 
   const removeSkill = (skillToRemove) => {
@@ -163,7 +222,7 @@ const EducationForm = ({ data, setData }) => {
                     />
                   </div>
                 </div>
-                <div className="flex items-end">
+                <div className="flex items-end gap-2">
                   <label className="h-[46px] px-4 bg-gray-200 rounded-lg flex items-center gap-2 cursor-pointer">
                     <input
                       type="file"
@@ -199,8 +258,14 @@ const EducationForm = ({ data, setData }) => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    {section.documentFile ? section.documentFile.name : 'Upload Document'}
+                    {section.isUploading ? 'Uploading...' : 
+                     section.document ? 'Change Document' : 'Upload Document'}
                   </label>
+                  {section.fileName && (
+                    <span className="text-sm text-gray-600 ml-2 truncate max-w-xs">
+                      {section.fileName}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

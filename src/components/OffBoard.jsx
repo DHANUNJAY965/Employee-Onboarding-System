@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Share2 } from 'lucide-react';
 
@@ -9,15 +8,17 @@ const OffBoard = ({ data, setData }) => {
     exitInterview: data?.exitInterview || false,
     enCashLeave: data?.enCashLeave || false,
     conductor: data?.conductor || '',
-    fileUrl: data?.fileUrl || '',
+    fileUrl: data?.fileUrl || ''
   });
 
+ 
+  const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState('');
   
   useEffect(() => {
     setData(formState);
   }, [formState]);
 
- 
   const handleFieldChange = (field, value) => {
     setFormState(prev => ({
       ...prev,
@@ -30,15 +31,27 @@ const OffBoard = ({ data, setData }) => {
     if (!file) return;
     
     try {
-      
-      const fakeUrl = URL.createObjectURL(file);
-      
-      handleFieldChange('fileUrl', fakeUrl);
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('file', file);
 
-      
-      return () => URL.revokeObjectURL(fakeUrl);
+      const response = await fetch('http://localhost:5000/api/upload/document', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        handleFieldChange('fileUrl', data.url);
+        setFileName(file.name); 
+      } else {
+        throw new Error('File upload failed');
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -88,10 +101,10 @@ const OffBoard = ({ data, setData }) => {
               />
             </div>
 
-            <div>
+            <div className="flex items-center gap-2">
               <label className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-lg cursor-pointer">
                 <Share2 size={20} />
-                <span>Upload Doc</span>
+                <span>{formState.fileUrl ? 'Change Document' : 'Upload Doc'}</span>
                 <input
                   type="file"
                   onChange={handleFileUpload}
@@ -99,6 +112,10 @@ const OffBoard = ({ data, setData }) => {
                   accept=".pdf,.doc,.docx,.txt"
                 />
               </label>
+              {uploading && <span className="text-sm text-gray-600">Uploading...</span>}
+              {fileName && !uploading && (
+                <span className="text-sm text-gray-600">{fileName}</span>
+              )}
             </div>
           </>
         )}
@@ -113,12 +130,6 @@ const OffBoard = ({ data, setData }) => {
           <span>En-cash Leave</span>
         </label>
       </div>
-
-      {formState.fileUrl && (
-        <div className="text-sm text-gray-600">
-          File uploaded: {formState.fileUrl}
-        </div>
-      )}
     </div>
   );
 };

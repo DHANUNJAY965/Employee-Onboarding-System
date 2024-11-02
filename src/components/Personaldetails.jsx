@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Upload } from "lucide-react";
-
+import { toast, ToastContainer } from 'react-toastify';
 function PersonalDetails({ data, setData ,setUserName}) {
   const [formState, setFormState] = useState({
     employeeId: data?.employeeId || "",
@@ -10,7 +10,7 @@ function PersonalDetails({ data, setData ,setUserName}) {
     mobile: data?.mobile || "",
     countryCode: data?.countryCode || "+65",
     gender: data?.gender || "M",
-    photo: data?.photo || null,
+    photo: data?.photo || "",
     dateOfBirth: data?.dateOfBirth || "",
     age: data?.age || "",
     nationality: data?.nationality || "",
@@ -55,16 +55,46 @@ function PersonalDetails({ data, setData ,setUserName}) {
       [name]: value,
     }));
   };
-
-  const handleFileUpload = (e) => {
+    
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
+    console.log("reached 1");
     if (file) {
-      setFormState((prev) => ({
-        ...prev,
-        photo: file,
-      }));
+      const formData = new FormData();
+      formData.append("file", file);
+      console.log("reached 2");
+      try {
+        const response = await fetch('http://localhost:5000/api/upload/image', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        if (!response.ok) {
+          console.log("reached 3");
+          throw new Error('File upload failed');
+        }
+        console.log("reached 4");
+        const data = await response.json();
+       
+        if (data.success) {
+          console.log("the data is successfully : ",data.url);
+          setFormState((prev) => ({
+            ...prev,
+            photo: data.url, 
+          }));
+          console.log(formData.photo);
+        } else {
+          console.log("reached 5");
+          throw new Error('Failed to upload file');
+        }
+      } catch (error) {
+        console.log("reached 6");
+        toast.error(error.message || 'An error occurred while uploading the file.');
+      }
     }
   };
+  
+
 
   const calculateAge = (birthDate) => {
     if (!birthDate) return "";
@@ -97,7 +127,7 @@ function PersonalDetails({ data, setData ,setUserName}) {
     <div className="p-6">
       <div className="flex justify-between">
         <div className="flex-1">
-          <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6">
             <div className="flex flex-col">
               <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mb-2">Employee ID</label>
               <input
@@ -115,7 +145,6 @@ function PersonalDetails({ data, setData ,setUserName}) {
                 type="text"
                 name="fullName"
                 value={formState.fullName}
-                
                 onChange={(e) => {
                   handleInputChange(e);
                   setUserName(e.target.value);
@@ -195,7 +224,7 @@ function PersonalDetails({ data, setData ,setUserName}) {
         </div>
 
         <div className="ml-8">
-          <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
+          <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 relative overflow-hidden">
             <input
               type="file"
               className="hidden"
@@ -203,10 +232,27 @@ function PersonalDetails({ data, setData ,setUserName}) {
               onChange={handleFileUpload}
               accept="image/*"
             />
-            <label htmlFor="file-upload" className="cursor-pointer">
-              <Upload className="w-8 h-8 text-gray-400 mb-2" />
-              <div className="text-sm text-gray-500">Upload Photo</div>
-            </label>
+            {formState.photo ? (
+              <div className="w-full h-full relative">
+                <img 
+                  src={formState.photo} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover rounded-full"
+                />
+                <label 
+                  htmlFor="file-upload" 
+                  className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200"
+                >
+                  <Upload className="w-8 h-8 text-white mb-2" />
+                  <div className="text-sm text-white">Change Photo</div>
+                </label>
+              </div>
+            ) : (
+              <label htmlFor="file-upload" className="cursor-pointer">
+                <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                <div className="text-sm text-gray-500">Upload Photo</div>
+              </label>
+            )}
           </div>
         </div>
       </div>

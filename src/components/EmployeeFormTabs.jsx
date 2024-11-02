@@ -8,6 +8,7 @@ import EmployeeForm from "./EmployeeForm";
 import Earning from "./Earning";
 import LeaveBenefitsTable from "./LeaveBenefitsTable";
 import OffBoard from "./OffBoard";
+import { toast } from 'react-hot-toast';
 
 const navItems = [
   { id: 1, label: "Personal Details", active: true },
@@ -21,18 +22,21 @@ const navItems = [
   { id: 9, label: "Off Boarding", active: false },
 ];
 
+const initialFormState = {
+  personalDetails: {},
+  education: {},
+  experience: {},
+  contact: {},
+  maritalStatus: {},
+  employment: {},
+  earning: {},
+  Benefits: {},
+};
+
 const EmployeeFormTabs = ({setUserName}) => {
   const [activeTab, setActiveTab] = useState(1);
-  const [formData, setFormData] = useState({
-    personalDetails: {},
-    education: {},
-    experience: {},
-    contact: {},
-    maritalStatus: {},
-    employment: {},
-    earning: {},
-    Benefits: {},
-  });
+  const [formData, setFormData] = useState(initialFormState);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleFormDataChange = (key, data) => {
     setFormData((prevData) => ({
@@ -41,16 +45,49 @@ const EmployeeFormTabs = ({setUserName}) => {
     }));
   };
 
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setActiveTab(1);
+    navItems.forEach((navItem) => {
+      navItem.active = navItem.id === 1;
+    });
+  };
+
+  const handleSaveEmployee = async () => {
+    try {
+      setIsSaving(true);
+      console.log("the data is :",formData);
+      const response = await fetch('http://localhost:5000/api/employees', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('Employee created successfully');
+        resetForm();
+      } else {
+        throw new Error(result.message || 'Error creating employee');
+      }
+    } catch (error) {
+      console.error('Error saving employee:', error);
+      toast.error('Error uploading data');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleNext = () => {
     if (activeTab < navItems.length) {
       setActiveTab(activeTab + 1);
       navItems.forEach((navItem) => {
         navItem.active = navItem.id === activeTab + 1;
       });
-    }
-    else{
-      alert(`Here are the details that are now given: ${JSON.stringify(formData)}`);
-
     }
   };
 
@@ -112,9 +149,7 @@ const EmployeeFormTabs = ({setUserName}) => {
       </div>
 
       <div className="w-full my-4 h-[450px] overflow-y-auto custom-scrollbar">
-        
-
-{activeTab === 1 && (
+        {activeTab === 1 && (
           <PersonalDetails
             data={formData.personalDetails}
             setUserName={setUserName}
@@ -132,22 +167,19 @@ const EmployeeFormTabs = ({setUserName}) => {
             data={formData.experience}
             setData={(data) => handleFormDataChange("experience", data)}
           />
-        ) }
-        
+        )}
         {activeTab === 4 && (
           <ContactForm
             data={formData.contact}
             setData={(data) => handleFormDataChange("contact", data)}
           />
         )}
-        {/* && console.log("the data is : ",formData.personalDetails,formData.education,formData.experience) */}
         {activeTab === 5 && (
           <MaritalStatusForm
             data={formData.maritalStatus}
             setData={(data) => handleFormDataChange("maritalStatus", data)}
           />
-        ) }
-        {/* && console.log("the contact details are :",formData.contact) */}
+        )}
         {activeTab === 6 && (
           <EmployeeForm
             data={formData.employment}
@@ -159,22 +191,19 @@ const EmployeeFormTabs = ({setUserName}) => {
             data={formData.earning}
             setData={(data) => handleFormDataChange("earning", data)}
           />
-        ) }
-        {/* && console.log("the contact details are :",formData.employment) */}
+        )}
         {activeTab === 8 && (
           <LeaveBenefitsTable
             data={formData.Benefits}
             setData={(data) => handleFormDataChange("Benefits", data)}
           />
         )}
-        {/* && console.log("the contact details are :",formData.earning) */}
         {activeTab === 9 && (
           <OffBoard
             data={formData.earning}
             setData={(data) => handleFormDataChange("earning", data)}
           />
         )}
-        {/* && console.log("the contact details are :",formData.Benefits) */}
       </div>
 
       <div className="flex items-center justify-between mt-4">
@@ -227,10 +256,11 @@ const EmployeeFormTabs = ({setUserName}) => {
           </button>
 
           <button
-            onClick={handleNext}
+            onClick={activeTab === 9 ? handleSaveEmployee : handleNext}
+            disabled={isSaving}
             className="flex items-center gap-2 px-6 py-2 text-white bg-[#1E3B8B] rounded-lg hover:bg-[#1a3279] transition-colors"
           >
-            {activeTab === 9 ? `Save` : `Next`}
+            {activeTab === 9 ? (isSaving ? 'Saving...' : 'Save') : 'Next'}
             <svg
               width="24"
               height="24"

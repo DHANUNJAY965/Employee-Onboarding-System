@@ -22,7 +22,7 @@ const LeaveBenefitsTable = ({ data, setData }) => {
   const [availableTitle, setAvailableTitle] = useState('Available');
   const [assignedTitle, setAssignedTitle] = useState('Assigned');
 
-  // Update parent component whenever form state changes
+  
   useEffect(() => {
     setData(formState);
   }, [formState]);
