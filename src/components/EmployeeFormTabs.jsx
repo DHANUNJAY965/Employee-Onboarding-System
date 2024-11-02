@@ -23,7 +23,6 @@ const navItems = [
 
 const EmployeeFormTabs = ({setUserName}) => {
   const [activeTab, setActiveTab] = useState(1);
-
   const [formData, setFormData] = useState({
     personalDetails: {},
     education: {},
@@ -49,6 +48,10 @@ const EmployeeFormTabs = ({setUserName}) => {
         navItem.active = navItem.id === activeTab + 1;
       });
     }
+    else{
+      alert(`Here are the details that are now given: ${JSON.stringify(formData)}`);
+
+    }
   };
 
   const handleBack = () => {
@@ -61,8 +64,30 @@ const EmployeeFormTabs = ({setUserName}) => {
   };
 
   return (
-    <div className="flex mx-36 my-8 flex-col overflow-x-auto no-scrollbar w-[1110px]">
-      <div className="flex gap-1 p-1 border-b-[3px] pb-3 border-b-[#333333]">
+    <div className="flex mx-36 my-8 flex-col w-[1110px]">
+      <style jsx>{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #888 #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+      `}</style>
+
+      <div className="flex gap-1 p-1 border-b-[3px] pb-3 border-b-[#333333] overflow-x-auto custom-scrollbar">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -73,20 +98,23 @@ const EmployeeFormTabs = ({setUserName}) => {
               });
             }}
             className={`w-fit rounded-3xl whitespace-nowrap ml-1 px-4 py-3 text-xs font-bold text-center font-poppins transition-colors
-                ${
-                  item.active
-                    ? "bg-blue-900 text-white"
-                    : "bg-gray-100 shadow-[inset_-6px_-6px_4px_rgba(255,233,233,0.25),inset_6px_6px_4px_#CFCFCF] hover:bg-gray-200"
-                }
-              `}
+              ${
+                item.active
+                  ? "bg-blue-900 text-white"
+                  : "bg-gray-100 shadow-[inset_-6px_-6px_4px_rgba(255,233,233,0.25),inset_6px_6px_4px_#CFCFCF] hover:bg-gray-200"
+              }
+            `}
             style={!item.active ? { color: "#232A69" } : {}}
           >
             <span>{item.label}</span>
           </button>
         ))}
       </div>
-      <div className=" w-[100%] my-4 h-[450px] overflow-y-auto">
-        {activeTab === 1 && (
+
+      <div className="w-full my-4 h-[450px] overflow-y-auto custom-scrollbar">
+        
+
+{activeTab === 1 && (
           <PersonalDetails
             data={formData.personalDetails}
             setUserName={setUserName}
@@ -146,11 +174,11 @@ const EmployeeFormTabs = ({setUserName}) => {
             setData={(data) => handleFormDataChange("earning", data)}
           />
         )}
+        {/* && console.log("the contact details are :",formData.Benefits) */}
       </div>
 
       <div className="flex items-center justify-between mt-4">
         <div>
-   
           {activeTab > 1 && (
             <button
               onClick={handleBack}
@@ -185,7 +213,6 @@ const EmployeeFormTabs = ({setUserName}) => {
         </div>
 
         <div className="flex gap-4">
-          
           <button className="flex items-center gap-2 px-6 py-2 text-[#1E3B8B] bg-[#E7EEF9] rounded-lg hover:bg-[#d8e3f3] transition-colors">
             <svg
               width="20"
@@ -199,12 +226,11 @@ const EmployeeFormTabs = ({setUserName}) => {
             Save as Draft
           </button>
 
-         
           <button
             onClick={handleNext}
             className="flex items-center gap-2 px-6 py-2 text-white bg-[#1E3B8B] rounded-lg hover:bg-[#1a3279] transition-colors"
           >
-            Next
+            {activeTab === 9 ? `Save` : `Next`}
             <svg
               width="24"
               height="24"

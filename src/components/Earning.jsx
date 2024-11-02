@@ -1,163 +1,229 @@
-import { FiChevronDown } from "react-icons/fi"; 
-import { useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
+import { useState, useEffect } from "react";
 import { FiPlus as Plus, FiMinus as Minus } from "react-icons/fi";
 
-const Earning = () => {
-  
-  const [ordinaryWages, setOrdinaryWages] = useState([{ title: "", amount: "" }]);
-  const [additionalWages, setAdditionalWages] = useState([{ title: "", amount: "" }]);
+const Earning = ({ data, setData }) => {
+  const [formState, setFormState] = useState({
+    basicPay: data?.basicPay || "",
+    paymentType: data?.paymentType || "",
+    paymentMode: data?.paymentMode || "",
+    frequency: data?.frequency || "",
+    payBasis: data?.payBasis || "",
+    hourlyRate: data?.hourlyRate || "",
+    dailyRate: data?.dailyRate || "",
+    salaryAdvance: data?.salaryAdvance || false,
+    ordinaryWages: data?.ordinaryWages || [{ title: "", amount: "", cpfApplicable: false, taxApplicable: false }],
+    additionalWages: data?.additionalWages || [{ title: "", amount: "", cpfApplicable: false, taxApplicable: false }]
+  });
 
+  
+  useEffect(() => {
+    setData(formState);
+  }, [formState]);
+
+  const handleInputChange = (field, value) => {
+    setFormState(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   const addOrdinaryWageSection = () => {
-    setOrdinaryWages([...ordinaryWages, { title: "", amount: "" }]);
+    setFormState(prev => ({
+      ...prev,
+      ordinaryWages: [...prev.ordinaryWages, { title: "", amount: "", cpfApplicable: false, taxApplicable: false }]
+    }));
   };
 
- 
   const removeOrdinaryWageSection = (index) => {
-    if (index === ordinaryWages.length - 1) {
-      const updatedWages = ordinaryWages.filter((_, i) => i !== index);
-      setOrdinaryWages(updatedWages);
+    if (index === formState.ordinaryWages.length - 1) {
+      setFormState(prev => ({
+        ...prev,
+        ordinaryWages: prev.ordinaryWages.filter((_, i) => i !== index)
+      }));
     }
   };
 
+  const updateOrdinaryWage = (index, field, value) => {
+    setFormState(prev => ({
+      ...prev,
+      ordinaryWages: prev.ordinaryWages.map((wage, i) => 
+        i === index ? { ...wage, [field]: value } : wage
+      )
+    }));
+  };
 
   const addAdditionalWageSection = () => {
-    setAdditionalWages([...additionalWages, { title: "", amount: "" }]);
+    setFormState(prev => ({
+      ...prev,
+      additionalWages: [...prev.additionalWages, { title: "", amount: "", cpfApplicable: false, taxApplicable: false }]
+    }));
   };
 
- 
   const removeAdditionalWageSection = (index) => {
-    if (index === additionalWages.length - 1) {
-      const updatedWages = additionalWages.filter((_, i) => i !== index);
-      setAdditionalWages(updatedWages);
+    if (index === formState.additionalWages.length - 1) {
+      setFormState(prev => ({
+        ...prev,
+        additionalWages: prev.additionalWages.filter((_, i) => i !== index)
+      }));
     }
   };
+
+  const updateAdditionalWage = (index, field, value) => {
+    setFormState(prev => ({
+      ...prev,
+      additionalWages: prev.additionalWages.map((wage, i) => 
+        i === index ? { ...wage, [field]: value } : wage
+      )
+    }));
+  };
+
   return (
     <>
-    <div className="grid grid-cols-4 gap-6 p-6 ">
-      
-      <div className="col-span-1">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Basic Pay
-        </label>
-        <div className="flex gap-2">
-          <select className="w-14 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
-            <option>$</option>
-          </select>
-          <input
-            type="text"
-            className="h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-          />
+      <div className="grid grid-cols-4 gap-6 p-6">
+        <div className="col-span-1">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Basic Pay
+          </label>
+          <div className="flex gap-2">
+            <select className="w-14 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
+              <option>$</option>
+            </select>
+            <input
+              type="text"
+              value={formState.basicPay}
+              onChange={(e) => handleInputChange('basicPay', e.target.value)}
+              className="h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+            />
+          </div>
         </div>
-      </div>
 
-      
-      <div className="col-span-1">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Payment Type
-        </label>
-        <input
-          type="text"
-          placeholder="Initial"
-          className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
-        />
-      </div>
-
-     
-      <div className="col-span-1 relative">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Payment Mode
-        </label>
-        <select className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none">
-          <option>Select Payment Method</option>
-        </select>
-        <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
-      </div>
-
-      
-      <div className="col-span-1 relative">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Frequency
-        </label>
-        <select className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none">
-          <option>Select Pay Frequency</option>
-        </select>
-        <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
-      </div>
-
-      
-      <div className="col-span-1 relative">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Pay Basis
-        </label>
-        <select className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none">
-          <option>Select Pay Basis</option>
-        </select>
-        <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
-      </div>
-
-      
-      <div className="col-span-1">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Hourly Rate
-        </label>
-        <div className="flex gap-2">
-          <select className="w-16 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
-            <option>$</option>
-          </select>
+        <div className="col-span-1">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Payment Type
+          </label>
           <input
             type="text"
+            placeholder="Initial"
+            value={formState.paymentType}
+            onChange={(e) => handleInputChange('paymentType', e.target.value)}
             className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
           />
         </div>
-      </div>
 
-      
-      <div className="col-span-1">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Daily Rate
-        </label>
-        <div className="flex gap-2">
-          <select className="w-16 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
-            <option>$</option>
+        <div className="col-span-1 relative">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Payment Mode
+          </label>
+          <select 
+            value={formState.paymentMode}
+            onChange={(e) => handleInputChange('paymentMode', e.target.value)}
+            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
+          >
+            <option value="">Select Payment Method</option>
+            <option value="cash">Cash</option>
+            <option value="check">Check</option>
+            <option value="bank_transfer">Bank Transfer</option>
           </select>
-          <input
-            type="text"
-            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+          <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
+        </div>
+
+        <div className="col-span-1 relative">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Frequency
+          </label>
+          <select 
+            value={formState.frequency}
+            onChange={(e) => handleInputChange('frequency', e.target.value)}
+            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
+          >
+            <option value="">Select Pay Frequency</option>
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Bi-weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
+        </div>
+
+        <div className="col-span-1 relative">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Pay Basis
+          </label>
+          <select 
+            value={formState.payBasis}
+            onChange={(e) => handleInputChange('payBasis', e.target.value)}
+            className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
+          >
+            <option value="">Select Pay Basis</option>
+            <option value="hourly">Hourly</option>
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <FiChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" size={16} />
+        </div>
+
+        <div className="col-span-1">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Hourly Rate
+          </label>
+          <div className="flex gap-2">
+            <select className="w-16 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
+              <option>$</option>
+            </select>
+            <input
+              type="text"
+              value={formState.hourlyRate}
+              onChange={(e) => handleInputChange('hourlyRate', e.target.value)}
+              className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div className="col-span-1">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Daily Rate
+          </label>
+          <div className="flex gap-2">
+            <select className="w-16 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none">
+              <option>$</option>
+            </select>
+            <input
+              type="text"
+              value={formState.dailyRate}
+              onChange={(e) => handleInputChange('dailyRate', e.target.value)}
+              className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
+            Salary Advance
+          </label>
+          <input 
+            type="checkbox" 
+            checked={formState.salaryAdvance}
+            onChange={(e) => handleInputChange('salaryAdvance', e.target.checked)}
+            className=" " 
           />
         </div>
       </div>
 
-      
-      <div className=" flex flex-col gap-2">
-        <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-          Salary Advance
-        </label>
-        <input type="checkbox" className="w-6 h-6 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
-      </div>
-
-      
-    </div>
-    <div className="p-6 space-y-4">
-      
+      <div className="p-6 space-y-4">
         <div>
           <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
             Other Ordinary Wages (If Any)
           </label>
-          {ordinaryWages.map((wage, index) => (
+          {formState.ordinaryWages.map((wage, index) => (
             <div key={index} className="flex gap-8 items-center mt-2">
               <div className="w-1/3">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
                 <input
                   type="text"
                   placeholder="Title"
-                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                   value={wage.title}
-                  onChange={(e) => {
-                    const updatedWages = [...ordinaryWages];
-                    updatedWages[index].title = e.target.value;
-                    setOrdinaryWages(updatedWages);
-                  }}
+                  onChange={(e) => updateOrdinaryWage(index, 'title', e.target.value)}
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                 />
               </div>
               <div className="w-1/3">
@@ -165,26 +231,32 @@ const Earning = () => {
                 <input
                   type="text"
                   placeholder="Amount"
-                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                   value={wage.amount}
-                  onChange={(e) => {
-                    const updatedWages = [...ordinaryWages];
-                    updatedWages[index].amount = e.target.value;
-                    setOrdinaryWages(updatedWages);
-                  }}
+                  onChange={(e) => updateOrdinaryWage(index, 'amount', e.target.value)}
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                 />
               </div>
               <div className="flex items-center">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
-                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+                <input 
+                  type="checkbox"
+                  checked={wage.cpfApplicable}
+                  onChange={(e) => updateOrdinaryWage(index, 'cpfApplicable', e.target.checked)}
+                  className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+                />
               </div>
               <div className="flex items-center">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
-                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+                <input 
+                  type="checkbox"
+                  checked={wage.taxApplicable}
+                  onChange={(e) => updateOrdinaryWage(index, 'taxApplicable', e.target.checked)}
+                  className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+                />
               </div>
               <div className="flex items-center">
                 
-                {index === ordinaryWages.length - 1 && (
+                {index === formState.ordinaryWages.length - 1 && (
                   <button
                     type="button"
                     className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
@@ -194,7 +266,7 @@ const Earning = () => {
                   </button>
                 )}
                 
-                {ordinaryWages.length > 1 && index === ordinaryWages.length - 1 && (
+                {formState.ordinaryWages.length > 1 && index === formState.ordinaryWages.length - 1 && (
                   <button
                     type="button"
                     className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
@@ -204,29 +276,24 @@ const Earning = () => {
                   </button>
                 )}
               </div>
-            </div>
+              </div>
           ))}
         </div>
-
-       
         <div>
           <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">
-            Additional Wages (If Any)
+          Additional Wages (If Any)
+
           </label>
-          {additionalWages.map((wage, index) => (
+          {formState.additionalWages.map((wage, index) => (
             <div key={index} className="flex gap-8 items-center mt-2">
               <div className="w-1/3">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black">Title</label>
                 <input
                   type="text"
                   placeholder="Title"
-                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                   value={wage.title}
-                  onChange={(e) => {
-                    const updatedWages = [...additionalWages];
-                    updatedWages[index].title = e.target.value;
-                    setAdditionalWages(updatedWages);
-                  }}
+                  onChange={(e) => updateAdditionalWage(index, 'title', e.target.value)}
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                 />
               </div>
               <div className="w-1/3">
@@ -234,26 +301,32 @@ const Earning = () => {
                 <input
                   type="text"
                   placeholder="Amount"
-                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                   value={wage.amount}
-                  onChange={(e) => {
-                    const updatedWages = [...additionalWages];
-                    updatedWages[index].amount = e.target.value;
-                    setAdditionalWages(updatedWages);
-                  }}
+                  onChange={(e) => updateAdditionalWage(index, 'amount', e.target.value)}
+                  className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] focus:outline-none"
                 />
               </div>
               <div className="flex items-center">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">CPF Applicable</label>
-              <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+                <input 
+                  type="checkbox"
+                  checked={wage.cpfApplicable}
+                  onChange={(e) => updateAdditionalWage(index, 'cpfApplicable', e.target.checked)}
+                  className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+                />
               </div>
               <div className="flex items-center">
                 <label className="text-[18px] leading-[27px] font-poppins font-normal text-black mr-2">TAX Applicable</label>
-                <input type="checkbox" className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" />
+                <input 
+                  type="checkbox"
+                  checked={wage.taxApplicable}
+                  onChange={(e) => updateAdditionalWage(index, 'taxApplicable', e.target.checked)}
+                  className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]" 
+                />
               </div>
               <div className="flex items-center">
                 
-                {index === additionalWages.length - 1 && (
+                {index === formState.additionalWages.length - 1 && (
                   <button
                     type="button"
                     className="p-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition"
@@ -263,7 +336,7 @@ const Earning = () => {
                   </button>
                 )}
                 
-                {additionalWages.length > 1 && index === additionalWages.length - 1 && (
+                {formState.additionalWages.length > 1 && index === formState.additionalWages.length - 1 && (
                   <button
                     type="button"
                     className="p-1 ml-2 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
@@ -273,12 +346,15 @@ const Earning = () => {
                   </button>
                 )}
               </div>
-            </div>
+              </div>
           ))}
         </div>
-      </div>
-    </>
-  );
+        </div>
+        </>)
 };
-
 export default Earning;
+              
+            
+              
+
+              

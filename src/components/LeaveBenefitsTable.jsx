@@ -1,48 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeftRight, X } from 'lucide-react';
 
-const LeaveBenefitsTable = () => {
-  const [availableItems, setAvailableItems] = useState(['Scheme']);
-  const [assignedItems, setAssignedItems] = useState([]);
+const LeaveBenefitsTable = ({ data, setData }) => {
+  
+  const [formState, setFormState] = useState({
+    offInLieuEligible: data?.offInLieuEligible || false,
+    leaveRows: data?.leaveRows || [
+      { code: 'HL', type: 'Hospitalization', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false },
+      { code: 'UP', type: 'Unpaid', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false },
+      { code: 'UP', type: 'Unpaid', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false },
+      { code: 'UP', type: 'Unpaid', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false },
+      { code: 'UP', type: 'Unpaid', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false },
+      { code: 'UP', type: 'Unpaid', eligibility: '', leaveIncrement: '', hourlyTimeOff: false, prorate: false }
+    ],
+    availableItems: data?.availableItems || ['Scheme'],
+    assignedItems: data?.assignedItems || []
+  });
+
   const [availableInput, setAvailableInput] = useState('');
   const [assignedInput, setAssignedInput] = useState('');
   const [availableTitle, setAvailableTitle] = useState('Available');
   const [assignedTitle, setAssignedTitle] = useState('Assigned');
 
-  const leaveRows = [
-    { code: 'HL', type: 'Hospitalization' },
-    { code: 'UP', type: 'Unpaid' },
-    { code: 'UP', type: 'Unpaid' },
-    { code: 'UP', type: 'Unpaid' },
-    { code: 'UP', type: 'Unpaid' },
-    { code: 'UP', type: 'Unpaid' }
-  ];
+  // Update parent component whenever form state changes
+  useEffect(() => {
+    setData(formState);
+  }, [formState]);
+
+  const handleLeaveRowChange = (index, field, value) => {
+    setFormState(prev => ({
+      ...prev,
+      leaveRows: prev.leaveRows.map((row, i) => 
+        i === index ? { ...row, [field]: value } : row
+      )
+    }));
+  };
+
+  const handleOffInLieuChange = (checked) => {
+    setFormState(prev => ({
+      ...prev,
+      offInLieuEligible: checked
+    }));
+  };
 
   const handleAvailableKeyDown = (e) => {
     if (e.key === 'Enter' && availableInput.trim()) {
-      setAvailableItems([...availableItems, availableInput.trim()]);
+      setFormState(prev => ({
+        ...prev,
+        availableItems: [...prev.availableItems, availableInput.trim()]
+      }));
       setAvailableInput('');
     }
   };
 
   const handleAssignedKeyDown = (e) => {
     if (e.key === 'Enter' && assignedInput.trim()) {
-      setAssignedItems([...assignedItems, assignedInput.trim()]);
+      setFormState(prev => ({
+        ...prev,
+        assignedItems: [...prev.assignedItems, assignedInput.trim()]
+      }));
       setAssignedInput('');
     }
   };
 
   const removeAvailableItem = (index) => {
-    setAvailableItems(availableItems.filter((_, i) => i !== index));
+    setFormState(prev => ({
+      ...prev,
+      availableItems: prev.availableItems.filter((_, i) => i !== index)
+    }));
   };
 
   const removeAssignedItem = (index) => {
-    setAssignedItems(assignedItems.filter((_, i) => i !== index));
+    setFormState(prev => ({
+      ...prev,
+      assignedItems: prev.assignedItems.filter((_, i) => i !== index)
+    }));
   };
 
   const handleSwap = () => {
-    setAvailableItems(assignedItems);
-    setAssignedItems(availableItems);
+    setFormState(prev => ({
+      ...prev,
+      availableItems: prev.assignedItems,
+      assignedItems: prev.availableItems
+    }));
     setAvailableTitle(prev => (prev === 'Available' ? 'Assigned' : 'Available'));
     setAssignedTitle(prev => (prev === 'Assigned' ? 'Available' : 'Assigned'));
   };
@@ -56,6 +96,8 @@ const LeaveBenefitsTable = () => {
           <input
             type="checkbox"
             className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]"
+            checked={formState.offInLieuEligible}
+            onChange={(e) => handleOffInLieuChange(e.target.checked)}
           />
           <span className="text-sm">Eligible for Off - In-Lieu</span>
         </label>
@@ -76,7 +118,7 @@ const LeaveBenefitsTable = () => {
           <div className="font-medium">Prorate</div>
         </div>
 
-        {leaveRows.map((row, index) => (
+        {formState.leaveRows.map((row, index) => (
           <div
             key={index}
             className="grid grid-cols-[100px_1fr_1fr_1fr_120px_120px] items-center p-4 gap-4 bg-white border-b border-gray-100"
@@ -90,24 +132,32 @@ const LeaveBenefitsTable = () => {
             <div>
               <input
                 type="text"
+                value={row.eligibility}
+                onChange={(e) => handleLeaveRowChange(index, 'eligibility', e.target.value)}
                 className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
               />
             </div>
             <div>
               <input
                 type="text"
+                value={row.leaveIncrement}
+                onChange={(e) => handleLeaveRowChange(index, 'leaveIncrement', e.target.value)}
                 className="w-full h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
               />
             </div>
             <div className="flex justify-center">
               <input
                 type="checkbox"
+                checked={row.hourlyTimeOff}
+                onChange={(e) => handleLeaveRowChange(index, 'hourlyTimeOff', e.target.checked)}
                 className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]"
               />
             </div>
             <div className="flex justify-center">
               <input
                 type="checkbox"
+                checked={row.prorate}
+                onChange={(e) => handleLeaveRowChange(index, 'prorate', e.target.checked)}
                 className="w-4 h-4 border-[#1A72A7] shadow-[0_0_4px_#1A72A7] rounded-md accent-[#1A72A7]"
               />
             </div>
@@ -131,7 +181,7 @@ const LeaveBenefitsTable = () => {
                 className="w-full mb-3 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
               />
               <div className="flex flex-wrap gap-2">
-                {availableItems.map((item, index) => (
+                {formState.availableItems.map((item, index) => (
                   <div key={index} className="inline-flex items-center gap-2 bg-gray-200 rounded-full px-3 py-1 text-sm">
                     {item}
                     <button 
@@ -167,7 +217,7 @@ const LeaveBenefitsTable = () => {
                 className="w-full mb-3 h-11 bg-white shadow-[2px_2px_4px_rgba(0,0,0,0.15),-1px_-1px_4px_rgba(0,0,0,0.15)] rounded-lg px-3 text-gray-700 font-poppins text-[12px] font-normal text-[rgba(51,51,51,0.8)] appearance-none focus:outline-none"
               />
               <div className="flex flex-wrap gap-2">
-                {assignedItems.map((item, index) => (
+                {formState.assignedItems.map((item, index) => (
                   <div key={index} className="inline-flex items-center gap-2 bg-gray-200 rounded-full px-3 py-1 text-sm">
                     {item}
                     <button 

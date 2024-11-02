@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const MaritalStatusForm = ({ data, setData }) => {
-  // Initialize state with props data or default values
+  
   const [formState, setFormState] = useState({
     maritalStatus: 'Single',
     spouseEmploymentStatus: '',
