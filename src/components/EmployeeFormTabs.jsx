@@ -292,3 +292,5 @@ const EmployeeFormTabs = ({setUserName}) => {
 };
 
 export default EmployeeFormTabs;
+
+// below is the code for the save as draft button
